@@ -1,11 +1,14 @@
 import React, { useState } from 'react'
 import axios from 'axios';
-const PersonForm = () => {
+import { useNavigate } from 'react-router-dom';
+const PersonForm = ({updated,setUpdated}) => {
+    const navigate=useNavigate()
     //keep track of what is being typed via useState hook
     const [firstName, setFirstName] = useState(""); 
     const [lastName, setLastName] = useState("");
     const [user,setUser]=useState({})
     const [val,setValidation]=useState({})
+    const [checked,setChecked]=useState(false)
     //handler when the form is submitted
     const onSubmitHandler = (e) => {
         //prevent default behavior of the submit
@@ -17,7 +20,9 @@ const PersonForm = () => {
         })
             .then(res=>{
                 console.log("res:"+res);
-                setUser(res.data) // always console log to get used to tracking your data!
+                setUser(res.data); // always console log to get used to tracking your data!
+                setUpdated(!updated);
+                !checked? navigate("/people") :  console.log("res:"+res);
                
             })
             .catch(err=>{console.log(err); setValidation(err.response.data.errors)})
@@ -40,9 +45,12 @@ const PersonForm = () => {
                 <label>Last Name</label><br/>
                 <input type="text" onChange = {(e)=>setLastName(e.target.value)}/>
             </p>
+            <label htmlFor="">Stay in this page</label>
+            <input type="checkbox"  onChange={(e)=>setChecked(prev=>!prev)}/>
 
             <input type="submit"/>
             {JSON.stringify(user)}
+            {JSON.stringify(checked)}
         </form>
     )
 }
