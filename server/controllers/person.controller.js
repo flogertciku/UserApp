@@ -16,7 +16,7 @@ module.exports.createPerson = (request, response) => {
 module.exports.getAllPeople = (request, response) => {
     Person.find({})
         .then(persons => {
-            console.log(persons); //console logs are optional, but they are highly recommended for troubleshooting!
+            // console.log(persons); //console logs are optional, but they are highly recommended for troubleshooting!
             response.json(persons);
         })
         .catch(err => {

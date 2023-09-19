@@ -1,17 +1,18 @@
 import React, { useState } from 'react'
+import io from 'socket.io-client';  
 
 import PersonForm from '../components/PersonForm';
 import PersonList from '../components/PersonList';
-const Main = (props) => {
+const Main = ({socket}) => {
     
     const [updated, setUpdated] = useState(false);
     
     return (
         <div>
     	/* PersonForm and Person List can both utilize the getter and setter established in their parent component: */
-           <PersonForm updated={updated}  setUpdated={setUpdated} />
+           <PersonForm socket={socket} updated={updated}  setUpdated={setUpdated} />
             <hr/>
-           <PersonList updated={updated}  setUpdated={setUpdated}  />
+           <PersonList socket={socket} updated={updated}  setUpdated={setUpdated}  />
         </div>
     )
 }

@@ -6,7 +6,7 @@ const PersonList = (props) => {
     via props by the parent component (app.js) to our child 
     component (PersonList.js). Now we can easily use the getter 
     and setter without having to write props.getter or props.setter every time: */
-    const {updated,setUpdated} = props;
+    const {updated,setUpdated,socket} = props;
     const[people,setPeople]=useState([])
     useEffect(()=>{
     	axios.get("http://localhost:8000/api/people")
@@ -14,14 +14,21 @@ const PersonList = (props) => {
 	    console.log(res.data);
             setPeople(res.data);
 	})
-    	.catch((err)=>{
-            console.log(err);
-    	})
+    	
+        socket.on('toClient', (data) => {
+            console.log("ne react therritet ")
+            // setPeople([...people,persons]);
+   
+            setUpdated(!updated)
+          });
+
+       
     }, [updated])
     const deleteUser=(id) =>{
         axios.delete(`http://localhost:8000/api/people/${id}`)
         .then( res => {
             console.log(res.data);
+            socket.emit("getDataFromReact", res.data);
             setUpdated(!updated)
             
         })

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-const PersonForm = ({updated,setUpdated}) => {
+const PersonForm = ({updated,setUpdated,socket}) => {
     const navigate=useNavigate()
     //keep track of what is being typed via useState hook
     const [firstName, setFirstName] = useState(""); 
@@ -22,7 +22,9 @@ const PersonForm = ({updated,setUpdated}) => {
                 console.log("res:"+res);
                 setUser(res.data); // always console log to get used to tracking your data!
                 setUpdated(!updated);
-                !checked? navigate("/people") :  console.log("res:"+res);
+                socket.emit("getDataFromReact", res.data);
+                console.log("request just sent")
+                // !checked? navigate("/people") :  console.log("res:"+res);
                
             })
             .catch(err=>{console.log(err); setValidation(err.response.data.errors)})
@@ -49,8 +51,8 @@ const PersonForm = ({updated,setUpdated}) => {
             <input type="checkbox"  onChange={(e)=>setChecked(prev=>!prev)}/>
 
             <input type="submit"/>
-            {JSON.stringify(user)}
-            {JSON.stringify(checked)}
+            {/* {JSON.stringify(user)}
+            {JSON.stringify(checked)} */}
         </form>
     )
 }
